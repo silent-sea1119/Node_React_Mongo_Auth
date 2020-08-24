@@ -1,0 +1,39 @@
+
+###  CREATE USER
+POST http://localhost:4000/signup
+Content-Type: application/json 
+
+{
+    "email":"tomek@email.com",
+    "password": "testpass"
+}
+
+### LOG IN
+POST http://localhost:4000/login 
+Content-Type: application/json
+
+{
+    "email":"tomek@email.com",
+    "password": "testpass"  
+}
+
+### REFRESH TOKEN
+POST http://localhost:4000/token 
+Content-Type: application/json
+
+{
+    "ref_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkYW1AZW1haWwuY29tIiwiaWF0IjoxNTk4MjE5MTMzfQ.So9wMmVU6AM3Og6vHnShSfCvtENmTUZK6tIw5f15djw"
+}
+
+### LOG OUT
+POST http://localhost:4000/logout 
+Content-Type: application/json
+
+{
+    "ref_token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImdvZ0BlbWFpbC5jb20iLCJwYXNzd29yZCI6IiQyYSQxMCRqc1BxZWtzQS5QRVQvNnVUU0xsTVF1eEtQb1A5WUxDSlRDRGx1aTE4dllOOWtHQmNQRmJDQyIsImlhdCI6MTU5ODIxNTgxM30.-JLw5o6pxAH2JX3cDoDrBGVmbRA0LsP47xEOhfOTtio"
+}
+
+
+### RESTRICTED 
+GET http://localhost:4000/restricted 
+authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkYW1AZW1haWwuY29tIiwiaWF0IjoxNTk4MjE5NDE5LCJleHAiOjE1OTgyMTk0MzR9.576Pgv9f_QLFT_Mnxg-JfDmkbqPPBEkj6vMHxMVjDpw
