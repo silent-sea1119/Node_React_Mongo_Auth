@@ -94,8 +94,8 @@ module.exports = function (app) {
     // LOGOUT
     app.post('/logout', (req, res) => {
         // find token in db
-        refrestTokens = refrestTokens.filter(token => token !== req.body.ref_token)
-        res.sendStatus(204) // successfully deleted the token
+        refrestTokens = refrestTokens.filter(token => token !== req.body.refreshToken)
+        res.status(204).send('Logout Success.') // successfully deleted the token
     })
 
 
@@ -105,7 +105,7 @@ module.exports = function (app) {
             Generate new access token if old one is about to expire
             Use refresh token to check if access token should be created
         */
-        const refrestToken = req.body.ref_token // get refrest token from request
+        const refrestToken = req.body.refreshToken // get refrest token from request
         if (refrestToken == null) return res.sendStatus(401) // 401 unauthorized
         if (!refrestTokens.includes(refrestToken)) return res.sendStatus(403); // 403 fobriden
         // verify token

@@ -33,6 +33,7 @@ const Login = (props) => {
         axios.post(url, data, headers)
             .then(res => {
                 props.login(res.data.accessToken, res.data.refreshToken)
+                console.log('Login Success.')
             })
             .catch(err => console.log(err))
     };
