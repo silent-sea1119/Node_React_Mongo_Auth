@@ -83,7 +83,7 @@ module.exports = function (app) {
             const refreshToken = jwt.sign(userSimplified, process.env.REFRESH_TOKEN_SECRET);
             refrestTokens.push(refreshToken)
 
-            res.status(200).json({ accessToken: accessToken, refrestToken: refreshToken });
+            res.status(200).json({ accessToken: accessToken, refreshToken: refreshToken });
         } else {
             //wrong password
             return res.status(403).send("Wrong credentials.")

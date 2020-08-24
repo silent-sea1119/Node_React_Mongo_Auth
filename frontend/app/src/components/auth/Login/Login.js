@@ -1,9 +1,7 @@
-
 import React from 'react';
 import axios from 'axios';
 import * as EmailValidator from "email-validator";
-
-
+import { connect } from 'react-redux';
 
 const Login = (props) => {
     function handleLoginSubmit(e) {
@@ -34,8 +32,7 @@ const Login = (props) => {
         // call api
         axios.post(url, data, headers)
             .then(res => {
-                console.log(res.data)
-                console.log(res.status)
+                props.login(res.data.accessToken, res.data.refreshToken)
             })
             .catch(err => console.log(err))
     };
@@ -53,5 +50,26 @@ const Login = (props) => {
     )
 };
 
+const mapStateToProps = state => {
+    return {
+        accessToken: state.auth.accessToken,
+        refreshToken: state.auth.refreshToken
+    }
+}
 
-export default Login;
+const mapDispatchToProps = dispatch => {
+    return {
+        login: (accessToken, refreshToken) => {
+            dispatch({
+                type: "LOGIN",
+                payload: {
+                    refreshToken: refreshToken,
+                    accessToken: accessToken
+                }
+            })
+        }
+    }
+}
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

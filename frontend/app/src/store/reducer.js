@@ -1,12 +1,27 @@
 
 
 
-const initialState = { counter: 1 }
-const reducer = (state = initialState, action) => {
-    if (action.type === 'INCREMENT') {
+const initialState = {
+    user: {
+        email: ''
+    },
+    auth: {
+        accessToken: '',
+        refreshToken: ''
+    }
+}
+
+
+
+const reducer = (state = initialState, action, payload) => {
+    if (action.type === 'LOGIN') {
         return {
             ...state,
-            counter: state.counter + 1
+            auth: {
+                ...state.auth,
+                accessToken: action.payload.accessToken,
+                refreshToken: action.payload.refreshToken
+            }
         }
     }
     return state
