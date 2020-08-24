@@ -21,10 +21,19 @@ let User = new Schema({
 )
 const UserModel = mongoose.model("User", User);
 
+let RefreshToken = new Schema({
+    token: {
+        type: String,
+        unique: true
+    }
+})
+const RefreshTokenModel = mongoose.model('RefreshToken', RefreshToken)
+
 
 
 // export models
 module.exports.UserModel = UserModel;
+module.exports.RefreshTokenModel = RefreshTokenModel;
 
 
 

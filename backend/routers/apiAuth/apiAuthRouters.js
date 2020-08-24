@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const UserModel = require('../../models/UserModel/UserModel').UserModel;
-
+const RefreshTokenModel = require('../../models/UserModel/UserModel').RefreshTokenModel;
 
 
 // UTILS
@@ -22,11 +22,6 @@ function checkCredentials(req, res) {
 function generateAccessToken(user) {
     return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '15s' })
 }
-
-
-// --------------------------users to be removed 
-let refrestTokens = [];
-// --------------------------above to be removed affter eb added
 
 
 // ROUTS :
@@ -81,7 +76,8 @@ module.exports = function (app) {
 
             // Generate and save refresh token
             const refreshToken = jwt.sign(userSimplified, process.env.REFRESH_TOKEN_SECRET);
-            refrestTokens.push(refreshToken)
+            const token = new RefreshTokenModel({ token: refreshToken });
+            await token.save();
 
             res.status(200).json({ accessToken: accessToken, refreshToken: refreshToken });
         } else {
@@ -92,29 +88,47 @@ module.exports = function (app) {
 
 
     // LOGOUT
-    app.post('/logout', (req, res) => {
+    app.post('/logout', async (req, res) => {
         // find token in db
-        refrestTokens = refrestTokens.filter(token => token !== req.body.refreshToken)
-        res.status(204).send('Logout Success.') // successfully deleted the token
+        try {
+            await RefreshTokenModel.findOneAndDelete({ token: req.body.refreshToken })
+            res.sendStatus(204) // successfully deleted the token
+        } catch (err) {
+            console.log(err)
+            res.sendStatus(500)
+        }
+
     })
 
 
     // GENEREATE NEW ACCESS TOKEN IF OLD EXPIRED
-    app.post('/token', (req, res) => {
+    app.post('/token', async (req, res) => {
         /*
             Generate new access token if old one is about to expire
             Use refresh token to check if access token should be created
         */
-        const refrestToken = req.body.refreshToken // get refrest token from request
-        if (refrestToken == null) return res.sendStatus(401) // 401 unauthorized
-        if (!refrestTokens.includes(refrestToken)) return res.sendStatus(403); // 403 fobriden
-        // verify token
-        jwt.verify(refrestToken, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
-            if (err) return res.sendStatus(403) // wrong token
-            // create new access token
-            const accessToken = generateAccessToken({ email: user.email })
-            res.json({ accessToken: accessToken })
-        })
+        const refreshToken = req.body.refreshToken // get refresh token from request
+        if (refreshToken == null) return res.sendStatus(401) // 401 unauthorized
+
+        // lookup for tokens
+        const token = await RefreshTokenModel.findOne({ token: refreshToken });
+
+        if (token === null) return res.sendStatus(403); // 403 fobriden
+        // test if token object is valid
+        if (typeof token === 'object' && typeof token.token === 'string') {
+            // verify token
+            jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
+                if (err) return res.sendStatus(403) // wrong token
+                // create new access token
+                const accessToken = generateAccessToken({ email: user.email })
+                return res.json({ accessToken: accessToken })
+            })
+        } else {
+            return res.sendStatus(500) // nothing else worked 
+        }
+
+
+
     }) // ---> GENEREATE NEW ACCESS TOKEN IF OLD EXPIRED
 
 
