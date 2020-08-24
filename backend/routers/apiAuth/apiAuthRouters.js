@@ -50,7 +50,11 @@ module.exports = function (app) {
         })
         await user.save();
 
-        res.status(201).send(user)
+        const userSimplified = {
+            email: user.email
+        }
+
+        res.status(201).send(userSimplified)
     }) // ---> CREATE USER 
 
 

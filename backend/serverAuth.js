@@ -1,6 +1,6 @@
 const express = require('express');
+var cors = require('cors')
 const app = express();
-// const jwt = require('jsonwebtoken');
 const mongoose = require('mongoose');
 
 // set up env variables
@@ -19,6 +19,7 @@ db.once('open', () => console.log('Connection with mongoDG ready!'));
 
 
 // MIDDLEWARE
+app.use(cors())
 app.use('/assets', express.static('public'));
 app.use(express.json());
 
