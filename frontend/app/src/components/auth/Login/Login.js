@@ -3,7 +3,12 @@ import axios from 'axios';
 import * as EmailValidator from "email-validator";
 import { connect } from 'react-redux';
 
+
 const Login = (props) => {
+
+
+
+
     function handleLoginSubmit(e) {
         // stop submit
         e.preventDefault();
@@ -44,8 +49,11 @@ const Login = (props) => {
             <form onSubmit={handleLoginSubmit}>
                 <input type="text" name="email" id="emailInput" />
                 <input type="password" name="password" id="password" />
+
                 <input type="submit" id="handleLoginSubmit"
                     className="submitBtn" value="Login" />
+
+
             </form>
         </div>
     )

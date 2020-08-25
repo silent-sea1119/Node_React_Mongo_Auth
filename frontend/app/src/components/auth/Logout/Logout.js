@@ -27,10 +27,15 @@ const Logout = props => {
             .catch(err => console.log(err))
     }
 
+
+
     return (
-        <div>
-            <a href='/' onClick={handleLogout}>Logout</a>
-        </div>
+        props.hide === 'true' ?
+            null :
+            <li>
+                <a href='/' onClick={handleLogout}>Logout</a>
+            </li>
+
     )
 }
 

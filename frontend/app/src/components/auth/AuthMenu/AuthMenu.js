@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect } from 'react';
+import React, { Fragment } from 'react';
 import {
     BrowserRouter as Router,
     Switch,
@@ -13,14 +13,7 @@ import { connect } from 'react-redux';
 
 function AuthMenu(props) {
 
-    useEffect(() => {
-        console.log('token: ', props.accessToken)
-
-        // props.accessToken !== '' ? <li><Logout /></li>
-        //     :
-        //     <li><Link to="/login">login</Link></li>
-    })
-
+    const hideLagout = props.accessToken !== '' ? 'false' : 'true'
 
     return (
         <div>
@@ -28,13 +21,18 @@ function AuthMenu(props) {
                 <ul>
                     <Fragment>
                         <li><Link to="/">home</Link></li>
-                        <li><Link to="/signup">signup</Link></li>
-                        <li><Link to="/login">login</Link></li>
-                        <Logout />
 
+                        {
+                            props.accessToken === '' ?
+                                <Fragment>
+                                    <li><Link to="/login">login</Link></li>
+                                    <li><Link to="/signup">signup</Link></li>
+                                </Fragment>
+                                :
+                                null
 
-
-
+                        }
+                        <Logout hide={hideLagout} />
                     </Fragment>
                 </ul>
 
