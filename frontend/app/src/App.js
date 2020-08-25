@@ -1,17 +1,28 @@
 import React from 'react';
 import './App.css';
-
-import Signup from './components/auth/Signup/Signup';
-import Login from './components/auth/Login/Login';
-import Logout from './components/auth/Logout/Logout';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Link,
+  Route
+} from 'react-router-dom';
+import AuthMenu from './components/auth/AuthMenu/AuthMenu';
+import Restricted from './components/restricted/Restricted';
 
 function App() {
   return (
     <div className="App">
       <h2>My Login App</h2>
-      <Signup />
-      <Login />
-      <Logout />
+      <AuthMenu />
+      <Router>
+        <Link to="/restricted">restricted</Link>
+
+        <Switch>
+          <Route path="/restricted">
+            <Restricted />
+          </Route>
+        </Switch>
+      </Router>
     </div>
   );
 }

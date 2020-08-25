@@ -20,7 +20,7 @@ const Login = (props) => {
             || password.length < 4) return console.log('password to short')
 
         // setup data and headers for axios call
-        const url = 'http://localhost:4000/login';
+        const url = props.url + '/login';
         const headers = {
             'Content-Type': 'application/json'
         }
@@ -53,6 +53,7 @@ const Login = (props) => {
 
 const mapStateToProps = state => {
     return {
+        url: state.apiURL.url,
         accessToken: state.auth.accessToken,
         refreshToken: state.auth.refreshToken
     }

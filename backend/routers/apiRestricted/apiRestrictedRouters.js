@@ -11,6 +11,9 @@ function authenticateToken(req, res, next) {
     const authHeader = req.headers['authorization'];
     const token = authHeader && authHeader.split(' ')[1];
 
+    console.log(req.headers)
+    console.log(req.headers['authorization'])
+
     if (token == null) return res.sendStatus(401); // token is missing
     // verify token and return user
     jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
@@ -24,6 +27,9 @@ function authenticateToken(req, res, next) {
 module.exports = function (app) {
     app.get('/restricted', authenticateToken, (req, res) => {
         const user = req.user; // created in authenticateToken
-        res.status(200).json(user)
+        res.status(200).json({
+            ...user,
+            message: "this is restricted"
+        })
     })
 }

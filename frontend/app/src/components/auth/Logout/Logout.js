@@ -3,11 +3,9 @@ import { connect } from 'react-redux';
 import axios from 'axios';
 
 const Logout = props => {
-
-
     function handleLogout() {
         // url
-        const url = 'http://localhost:4000/logout'
+        const url = props.url + '/logout';
         // headers
         const headers = {
             "Content-Type": "application/json"
@@ -22,6 +20,7 @@ const Logout = props => {
         axios.post(url, data, headers)
             .then(res => {
                 if (res.status === 204) {
+                    props.logout();
                     console.log("Logout success.")
                 }
             })
@@ -30,15 +29,21 @@ const Logout = props => {
 
     return (
         <div>
-            <button onClick={handleLogout}>Logout</button>
+            <a href='/' onClick={handleLogout}>Logout</a>
         </div>
     )
 }
 
 const mapStateToProps = state => {
     return {
+        url: state.apiURL.url,
         refreshToken: state.auth.refreshToken,
     }
 }
+const mapDispatchToProps = dispatch => {
+    return {
+        logout: dispatch({ type: 'LOGOUT' })
+    }
+}
 
-export default connect(mapStateToProps)(Logout);
+export default connect(mapStateToProps, mapDispatchToProps)(Logout);

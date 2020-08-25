@@ -2,7 +2,7 @@
 import React from 'react';
 import axios from 'axios';
 import * as EmailValidator from "email-validator";
-
+import { connect } from 'react-redux';
 
 
 const Signup = (props) => {
@@ -24,7 +24,7 @@ const Signup = (props) => {
         if (password !== passwordConfirm) return console.log("Type the same password twice.")
 
         // setup data and headers for axios call
-        const url = 'http://localhost:4000/signup';
+        const url = props.url + '/signup'; console.log(url);
         const headers = {
             'Content-Type': 'application/json'
         }
@@ -56,5 +56,10 @@ const Signup = (props) => {
     )
 };
 
+const mapStateToProps = state => {
+    return {
+        url: state.apiURL.url,
+    }
+}
 
-export default Signup;
+export default connect(mapStateToProps)(Signup);
