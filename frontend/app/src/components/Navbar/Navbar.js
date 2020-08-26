@@ -1,7 +1,7 @@
 
 
 import React, { Component, Fragment } from 'react';
-import { Link } from 'react-router-dom';
+import { Route, Link } from 'react-router-dom';
 import Logout from '../auth/Logout/Logout';
 import { connect } from 'react-redux';
 
@@ -9,17 +9,16 @@ import { connect } from 'react-redux';
 
 class Navbar extends Component {
     state = {
-        isAuth: false,
+        logout: Logout,
     }
 
     componentDidMount() {
-        if (this.props.accessToken !== '') {
-            this.setState({ isAuth: true })
-        }
-        console.log(this.state.isAuth)
+
     }
 
-
+    handleLogin() {
+        this.setState({ isAuth: true });
+    }
 
     render() {
         return (
@@ -35,18 +34,22 @@ class Navbar extends Component {
                             {/* <li className="nav-item active">
                                 <a className="nav-link" href="#">Home <span className="sr-only">(current)</span></a>
                             </li> */}
+                            {
+                                this.props.accessToken ?
+                                    <li className="nav-item">
+                                        <a href="" className="nav-link"><Route component={Logout} /> </a>
+                                    </li>
+                                    :
+                                    <Fragment>
+                                        <li className="nav-item">
+                                            <Link to='/auth/signup' className="nav-link">Signup</Link>
+                                        </li>
+                                        <li className="nav-item">
+                                            <Link to='/auth/login' className="nav-link">Login</Link>
+                                        </li>
+                                    </Fragment>
+                            }
 
-
-                            <li className="nav-item">
-                                <Link to='/auth/login' className="nav-link">Login</Link>
-                            </li>
-                            <li className="nav-item">
-                                <a href="" className="nav-link"><Logout /></a>
-
-                            </li>
-                            <li className="nav-item">
-                                <Link to='/auth/signup' className="nav-link">Signup</Link>
-                            </li>
                             <li className="nav-item">
                                 <Link to='/restricted' className="nav-link">Restricted</Link>
                             </li>
@@ -77,4 +80,4 @@ const mapStateToProps = state => {
     }
 }
 
-export default connect()(Navbar);
+export default connect(mapStateToProps)(Navbar);

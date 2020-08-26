@@ -1,11 +1,10 @@
-import React from 'react';
+import React, { Component } from 'react';
 import axios from 'axios';
 import * as EmailValidator from "email-validator";
 import { connect } from 'react-redux';
 
-
-const Login = (props) => {
-    function handleLoginSubmit(e) {
+class Login extends Component {
+    handleLoginSubmit(e) {
         // stop submit
         e.preventDefault();
 
@@ -21,7 +20,7 @@ const Login = (props) => {
             || password.length < 4) return console.log('password to short')
 
         // setup data and headers for axios call
-        const url = props.url + '/login';
+        const url = this.props.url + '/login';
         const headers = {
             'Content-Type': 'application/json'
         }
@@ -33,26 +32,27 @@ const Login = (props) => {
         // call api
         axios.post(url, data, headers)
             .then(res => {
-                props.login(res.data.accessToken, res.data.refreshToken)
+                this.props.login(res.data.accessToken, res.data.refreshToken)
                 console.log('Login Success.')
+                this.props.history.push({ pathname: "/" })
             })
             .catch(err => console.log(err))
     };
 
-    return (
-        <div>
-            <h4>Login</h4>
-            <form onSubmit={handleLoginSubmit}>
-                <input type="text" name="email" id="emailInput" />
-                <input type="password" name="password" id="password" />
+    render() {
+        return (
+            <div>
+                <h4>Login</h4>
+                <form onSubmit={this.handleLoginSubmit.bind(this)}>
+                    <input type="text" name="email" id="emailInput" />
+                    <input type="password" name="password" id="password" />
 
-                <input type="submit" id="handleLoginSubmit"
-                    className="submitBtn" value="Login" />
-
-
-            </form>
-        </div>
-    )
+                    <input type="submit" id="handleLoginSubmit"
+                        className="submitBtn" value="Login" />
+                </form>
+            </div>
+        )
+    }
 };
 
 const mapStateToProps = state => {

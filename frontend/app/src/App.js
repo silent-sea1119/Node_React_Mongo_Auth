@@ -16,8 +16,8 @@ function App(props) {
     <div className="App">
       <Router>
         <Navbar />
-        <div className='container'>
 
+        <div className='container'>
           <Switch>
             <Route path="/auth" component={AuthMenu} />
           </Switch>

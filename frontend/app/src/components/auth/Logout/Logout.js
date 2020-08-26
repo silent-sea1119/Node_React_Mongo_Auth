@@ -1,26 +1,26 @@
-import React, { Fragment } from 'react';
+import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import axios from 'axios';
 
-const Logout = props => {
-    function handleLogout() {
+class Logout extends Component {
+    handleLogout() {
         // url
-        const url = props.url + '/logout';
+        const url = this.props.url + '/logout';
         // headers
         const headers = {
             "Content-Type": "application/json"
         }
         // data
         const data = {
-            "refreshToken": props.refreshToken,
+            "refreshToken": this.props.refreshToken,
         }
 
-        if (props.refreshToken.length < 1) return console.log('You are not authenticated right now.')
+        if (this.props.refreshToken.length < 1) return console.log('You are not authenticated right now.')
         // call logout 
         axios.post(url, data, headers)
             .then(res => {
                 if (res.status === 204) {
-                    props.logout();
+                    this.props.logout();
                     console.log("Logout success.")
                 }
             })
@@ -28,22 +28,25 @@ const Logout = props => {
     }
 
 
-
-    return (
-        <span onClick={handleLogout}>Logout</span>
-    )
-}
-
-const mapStateToProps = state => {
-    return {
-        url: state.apiURL.url,
-        refreshToken: state.auth.refreshToken,
-    }
-}
-const mapDispatchToProps = dispatch => {
-    return {
-        logout: dispatch({ type: 'LOGOUT' })
+    render() {
+        return (
+            <span onClick={this.handleLogout.bind(this)}>Logout</span>
+        )
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Logout);
+// const mapStateToProps = state => {
+//     return {
+//         url: state.apiURL.url,
+//         refreshToken: state.auth.refreshToken,
+//     }
+// }
+// const mapDispatchToProps = dispatch => {
+//     return {
+//         logout: dispatch({ type: 'LOGOUT' })
+//     }
+// }
+
+// export default connect(mapStateToProps, mapDispatchToProps)(Logout);
+
+export default Logout;
