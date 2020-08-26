@@ -21,7 +21,6 @@ const initialState = {
 
 const reducer = (state = initialState, action) => {
     if (action.type === 'LOGIN') {
-        console.log(action.payload.accessToken)
         return {
             ...state,
             auth: {
@@ -46,4 +45,4 @@ const reducer = (state = initialState, action) => {
 }
 
 
-export default reducer;
+export { reducer, initialState };

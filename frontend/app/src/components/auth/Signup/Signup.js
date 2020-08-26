@@ -24,7 +24,7 @@ const Signup = (props) => {
         if (password !== passwordConfirm) return console.log("Type the same password twice.")
 
         // setup data and headers for axios call
-        const url = props.url + '/signup'; console.log(url);
+        const url = props.url + '/signup';
         const headers = {
             'Content-Type': 'application/json'
         }
@@ -36,8 +36,8 @@ const Signup = (props) => {
         // call api
         axios.post(url, data, headers)
             .then(res => {
-                console.log(res.data)
-                console.log(res.status)
+                // console.log(res.data)
+                console.log('status : ', res.status)
             })
             .catch(err => console.log(err))
     };

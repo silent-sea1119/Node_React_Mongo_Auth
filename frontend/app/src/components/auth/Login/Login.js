@@ -5,10 +5,6 @@ import { connect } from 'react-redux';
 
 
 const Login = (props) => {
-
-
-
-
     function handleLoginSubmit(e) {
         // stop submit
         e.preventDefault();

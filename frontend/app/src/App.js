@@ -3,28 +3,35 @@ import './App.css';
 import {
   BrowserRouter as Router,
   Switch,
-  Link,
   Route
 } from 'react-router-dom';
 import AuthMenu from './components/auth/AuthMenu/AuthMenu';
-import Restricted from './components/restricted/Restricted';
+import { connect } from 'react-redux';
+import Navbar from './components/Navbar/Navbar';
 
-function App() {
+
+function App(props) {
+
   return (
     <div className="App">
-      <h2>My Login App</h2>
-      <AuthMenu />
       <Router>
-        <Link to="/restricted">restricted</Link>
+        <Navbar />
+        <div className='container'>
 
-        <Switch>
-          <Route path="/restricted">
-            <Restricted />
-          </Route>
-        </Switch>
+          <Switch>
+            <Route path="/auth" component={AuthMenu} />
+          </Switch>
+        </div>
       </Router>
+
     </div>
   );
 }
 
-export default App;
+const mapStateToProps = state => {
+  return {
+    accessToken: state.auth.accessToken,
+  }
+}
+
+export default connect(mapStateToProps)(App);

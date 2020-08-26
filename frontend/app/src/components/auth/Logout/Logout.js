@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { connect } from 'react-redux';
 import axios from 'axios';
 
@@ -30,12 +30,7 @@ const Logout = props => {
 
 
     return (
-        props.hide === 'true' ?
-            null :
-            <li>
-                <a href='/' onClick={handleLogout}>Logout</a>
-            </li>
-
+        <span onClick={handleLogout}>Logout</span>
     )
 }
 

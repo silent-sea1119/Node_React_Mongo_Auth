@@ -1,63 +1,26 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import {
-    BrowserRouter as Router,
     Switch,
     Route,
-    Link
 } from 'react-router-dom';
 
 import Login from '../Login/Login';
-import Logout from '../Logout/Logout';
 import Signup from '../Signup/Signup';
-import { connect } from 'react-redux';
 
-function AuthMenu(props) {
-
-    const hideLagout = props.accessToken !== '' ? 'false' : 'true'
+const AuthMenu = props => {
 
     return (
         <div>
-            <Router>
-                <ul>
-                    <Fragment>
-                        <li><Link to="/">home</Link></li>
-
-                        {
-                            props.accessToken === '' ?
-                                <Fragment>
-                                    <li><Link to="/login">login</Link></li>
-                                    <li><Link to="/signup">signup</Link></li>
-                                </Fragment>
-                                :
-                                null
-
-                        }
-                        <Logout hide={hideLagout} />
-                    </Fragment>
-                </ul>
-
-
-                <Switch>
-                    <Route path="/login">
-                        <Login />
-                    </Route>
-                    <Route path="/signup">
-                        <Signup />
-                    </Route>
-                </Switch>
-            </Router>
-
-
+            <Switch>
+                <Route path={props.match.url + "/login"} exact component={Login} />
+                <Route path={props.match.url + "/signup"} exact component={Signup} />
+            </Switch>
         </div>
     )
-
-
 }
 
-const mapStateToProps = stats => {
-    return {
-        accessToken: stats.auth.accessToken,
-    }
-}
 
-export default connect(mapStateToProps)(AuthMenu);
+
+
+
+export default AuthMenu;
